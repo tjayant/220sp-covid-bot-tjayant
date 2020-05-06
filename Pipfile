@@ -1,0 +1,21 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+pytest-cov = "*"
+
+[packages]
+awscli = "*"
+pytest = "*"
+pandas = "*"
+fastparquet = "*"
+xlrd = "*"
+csci-utils = {editable = true,git = "https://github.com/csci-e-29/2020sp-csci-utils-tjayant"}
+lxml = "*"
+pathlib = "*"
+
+[requires]
+python_version = "3.7"
