@@ -13,17 +13,12 @@ Why does this file exist, and why not put this in __main__
 from luigi import build
 
 from .xtract import XmlParser
-from .datafetch import ContentHtml, ContentBotTemplate
+from .datafetch import ContentHtml, DownloadHTMLTemplate, DownloadBotTemplate
+from .generatebot import GenerateBot
 
 
 def main():  # pragma: no cover
     build(
-        [ContentHtml(),
-         ContentBotTemplate()
+        [GenerateBot()
          ],
         local_scheduler=True)
-
-    xmlparser = XmlParser(["cdcfaq", ])
-    xmlparser.extactIntents(4)
-    xmlparser.generateexcelforanalyst()
-    xmlparser.generatebot()

@@ -4,6 +4,27 @@ from pathlib import Path
 import json
 import re
 
+INTENT_JSON = """{
+        "name": "WhatisAMonkey",
+        "fulfillmentActivity": {
+          "type": "ReturnIntent"
+        },
+        "sampleUtterances": [
+          "What is a monkey",
+          "how do i know that the animal is a monkey"
+        ],
+        "slots": [],
+        "conclusionStatement": {
+          "messages": [
+            {
+              "groupNumber": 1,
+              "contentType": "PlainText",
+              "content": "A monkey is a cool animal that can do jumpy jumps"
+            }
+          ]
+        }
+    }"""
+
 
 def gen_sample_utterances(q: str, qa):
     removelist = " :_'."
@@ -125,7 +146,7 @@ def gen_lex_dynaminc_intents(qq_loc: Path):
                     continue
 
                 intent_name = f"{base_name}{num_to_char(qa_num)}"
-                lex_template = json.loads(intent_json)
+                lex_template = json.loads(INTENT_JSON)
                 resource = lex_template
                 resource["name"] = intent_name
                 resource["sampleUtterances"] = gen_sample_utterances(q, qa)
