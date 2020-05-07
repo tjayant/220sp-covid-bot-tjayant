@@ -2,6 +2,7 @@ from csci_utils.luigi.task import Requirement, Requires, TargetOutput
 from luigi import BoolParameter, Task, ExternalTask, Parameter, format, LocalTarget
 from lxml import etree
 import json
+import pandas as pd
 
 from .datafetch import DownloadHTMLTemplate, DownloadBotTemplate
 from .xgen import gen_lex_dynaminc_intents, gen_sample_utterances, num_to_char, INTENT_JSON
@@ -89,3 +90,36 @@ class GenerateBot(Task):
 
             with self.output().open('w') as outf:
                 json.dump(covidbot_templates, outf, indent=2)
+
+
+class GenerateExcel(Task):
+    number = Parameter(default=2)
+    requires = Requires()
+    geneeratejson = Requirement(GenerateFaqJsonFromHtml)
+
+    output = TargetOutput(
+        file_pattern="data/cdcfaq.csv",
+        ext="",
+        target_class=LocalTarget
+    )
+
+    def run(self):
+        # Use self.output() and self.input() targets to atomically copy
+        # the file locally!
+        with self.geneeratejson.output().open('r') as inf:
+            data = []
+            qas = json.load(inf)
+            for qa_num, qa in enumerate(qas):
+                answer = qa["a"]
+                q = qa["q"]
+                q = q.replace(",", " ")
+                if not answer.strip():
+                    continue
+                if not q.strip():
+                    continue
+                data.append({"question": q, "answer": answer})
+
+            df = pd.DataFrame(data)
+
+            with self.output().open('w') as outf:
+                df.to_csv(outf, index=False, compression='gzip')

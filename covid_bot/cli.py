@@ -14,11 +14,12 @@ from luigi import build
 
 from .xtract import XmlParser
 from .datafetch import ContentHtml, DownloadHTMLTemplate, DownloadBotTemplate
-from .generatebot import GenerateBot
+from .generatebot import GenerateBot,GenerateExcel
 
 
 def main():  # pragma: no cover
     build(
-        [GenerateBot()
+        [GenerateBot(),
+         GenerateExcel()
          ],
         local_scheduler=True)
