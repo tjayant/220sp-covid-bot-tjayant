@@ -10,12 +10,20 @@ Why does this file exist, and why not put this in __main__
     there's no ``csci_utils.__main__`` in ``sys.modules``.
   Also see (1) from http://click.pocoo.org/5/setuptools/#setuptools-integration
 """
+from luigi import build
+
 from .xtract import XmlParser
-from .xgen import to_xls, gen_lex_inline_intents, gen_lex_dynaminc_intents
+from .datafetch import ContentHtml, ContentBotTemplate
 
 
 def main():  # pragma: no cover
+    build(
+        [ContentHtml(),
+         ContentBotTemplate()
+         ],
+        local_scheduler=True)
+
     xmlparser = XmlParser(["cdcfaq", ])
-    xmlparser.xmlformat()
-    to_xls("data")
-    gen_lex_dynaminc_intents("data")
+    xmlparser.extactIntents(4)
+    xmlparser.generateexcelforanalyst()
+    xmlparser.generatebot()

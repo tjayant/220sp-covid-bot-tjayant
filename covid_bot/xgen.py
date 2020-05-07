@@ -1,12 +1,19 @@
+import pandas as pd
+
 from pathlib import Path
 import json
-import pandas as pd
+import re
 
 
 def gen_sample_utterances(q: str, qa):
+    removelist = " :_'."
+
     r = []
     if "u" in qa:
         r.extend(qa["u"])
+    q = re.sub(r'[^\w' + removelist + ']', '', q)
+    q = re.sub(r'[\d]','', q)
+    print(q)
     r.append(q)
     return r
 
@@ -123,13 +130,7 @@ def gen_lex_dynaminc_intents(qq_loc: Path):
                 resource["name"] = intent_name
                 resource["sampleUtterances"] = gen_sample_utterances(q, qa)
                 resource["conclusionStatement"]["messages"][0]["content"] = answer
-                intent_loc = (
-                    f"data/cdcfaq/{intent_name}.json"
-                )
                 covid_intents.append(resource)
-
-                with open(intent_loc, "w") as wf:
-                    json.dump(lex_template, wf, indent=2)
 
             bot_location = (
                 f"data/cdcfaq/{base_name}.json"
