@@ -9,8 +9,12 @@ from .xgen import gen_lex_dynaminc_intents, gen_sample_utterances, num_to_char, 
 from .xtract import XmlParser
 
 
-class GenerateFaqJsonFromHtml(Task):
+class BaseGenerateTask(Task):
+    _version__ = "1.0.0"
     number = Parameter(default=2)
+
+
+class GenerateFaqJsonFromHtml(BaseGenerateTask):
     requires = Requires()
     downloadtmltemplate = Requirement(DownloadHTMLTemplate)
 
@@ -48,8 +52,7 @@ class GenerateFaqJsonFromHtml(Task):
                 json.dump(lst, outf, indent=2)
 
 
-class GenerateBot(Task):
-    number = Parameter(default=2)
+class GenerateBot(BaseGenerateTask):
     requires = Requires()
     geneeratejson = Requirement(GenerateFaqJsonFromHtml)
     downloadbottemplate = Requirement(DownloadBotTemplate)
@@ -92,8 +95,7 @@ class GenerateBot(Task):
                 json.dump(covidbot_templates, outf, indent=2)
 
 
-class GenerateExcel(Task):
-    number = Parameter(default=2)
+class GenerateExcel(BaseGenerateTask):
     requires = Requires()
     geneeratejson = Requirement(GenerateFaqJsonFromHtml)
 
