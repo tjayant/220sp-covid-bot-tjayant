@@ -19,7 +19,7 @@ from .generatebot import GenerateBot,GenerateExcel
 
 def main():  # pragma: no cover
     build(
-        [GenerateBot(),
-         GenerateExcel()
+        [GenerateBot(number=2),
+         GenerateExcel(number=2)
          ],
         local_scheduler=True)

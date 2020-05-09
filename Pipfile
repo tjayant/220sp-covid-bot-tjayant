@@ -16,6 +16,10 @@ xlrd = "*"
 csci-utils = {editable = true,git = "https://github.com/csci-e-29/2020sp-csci-utils-tjayant"}
 lxml = "*"
 pathlib = "*"
+luigi = "*"
+boto3 = "*"
+moto = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.7"
